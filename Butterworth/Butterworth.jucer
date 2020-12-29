@@ -13,8 +13,9 @@
       <FILE id="zhACI4" name="PluginEditor.cpp" compile="1" resource="0"
             file="Source/PluginEditor.cpp"/>
       <FILE id="YyrqZq" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
-      <FILE id="cAh2ar" name="Butterworth.h" compile="0" resource="0" file="Source/Butterworth.h"/>
       <FILE id="upKWTZ" name="Cascade.h" compile="0" resource="0" file="Source/Cascade.h"/>
+      <FILE id="cAh2ar" name="Butterworth.h" compile="0" resource="0" file="Source/Butterworth.h"/>
+      <FILE id="qdO6I2" name="Biquad.h" compile="0" resource="0" file="Source/Biquad.h"/>
     </GROUP>
   </MAINGROUP>
   <EXPORTFORMATS>

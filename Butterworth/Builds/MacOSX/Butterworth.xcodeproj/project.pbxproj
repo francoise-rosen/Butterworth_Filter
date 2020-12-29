@@ -239,6 +239,13 @@
 			path = System/Library/Frameworks/Carbon.framework;
 			sourceTree = SDKROOT;
 		};
+		1681FF6085CADCEB1934743C = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = Biquad.h;
+			path = ../../Source/Biquad.h;
+			sourceTree = "SOURCE_ROOT";
+		};
 		19C8B5ACD7BB933DCDFBEBE9 = {
 			isa = PBXFileReference;
 			explicitFileType = wrapper.cfbundle;
@@ -639,8 +646,9 @@
 				EDE894D69A94F312780E62D8,
 				64075BB641E25C755A56A706,
 				5015B584A8E41216070C6E27,
-				DC22F786AD8527EEABF3862A,
 				2BA4757318D865AD72CA677E,
+				DC22F786AD8527EEABF3862A,
+				1681FF6085CADCEB1934743C,
 			);
 			name = Source;
 			sourceTree = "<group>";
