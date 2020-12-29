@@ -9,3 +9,14 @@
 */
 
 #pragma once
+
+struct FilterParameters
+{
+    FilterParameters() {}
+    ~FilterParameters() {}
+    
+    enum class FilterAlgorithm {LPF, HPF, BPF, BPS};
+    FilterAlgorithm algorithm {FilterAlgorithm::LPF};
+    int order;
+    float frequency;
+};
