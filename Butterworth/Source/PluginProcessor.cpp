@@ -24,6 +24,8 @@ ButterworthAudioProcessor::ButterworthAudioProcessor()
                        )
 #endif
 {
+    filterParameters.algorithm = syfo::FilterType::LPF2;
+    filterParameters.frequency = 100.0;
 }
 
 ButterworthAudioProcessor::~ButterworthAudioProcessor()
@@ -31,72 +33,12 @@ ButterworthAudioProcessor::~ButterworthAudioProcessor()
 }
 
 //==============================================================================
-const String ButterworthAudioProcessor::getName() const
-{
-    return JucePlugin_Name;
-}
-
-bool ButterworthAudioProcessor::acceptsMidi() const
-{
-   #if JucePlugin_WantsMidiInput
-    return true;
-   #else
-    return false;
-   #endif
-}
-
-bool ButterworthAudioProcessor::producesMidi() const
-{
-   #if JucePlugin_ProducesMidiOutput
-    return true;
-   #else
-    return false;
-   #endif
-}
-
-bool ButterworthAudioProcessor::isMidiEffect() const
-{
-   #if JucePlugin_IsMidiEffect
-    return true;
-   #else
-    return false;
-   #endif
-}
-
-double ButterworthAudioProcessor::getTailLengthSeconds() const
-{
-    return 0.0;
-}
-
-int ButterworthAudioProcessor::getNumPrograms()
-{
-    return 1;   // NB: some hosts don't cope very well if you tell them there are 0 programs,
-                // so this should be at least 1, even if you're not really implementing programs.
-}
-
-int ButterworthAudioProcessor::getCurrentProgram()
-{
-    return 0;
-}
-
-void ButterworthAudioProcessor::setCurrentProgram (int index)
-{
-}
-
-const String ButterworthAudioProcessor::getProgramName (int index)
-{
-    return {};
-}
-
-void ButterworthAudioProcessor::changeProgramName (int index, const String& newName)
-{
-}
-
-//==============================================================================
 void ButterworthAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
-    // Use this method as the place to do any pre-playback
-    // initialisation that you need..
+    for (int i = 0; i < getTotalNumInputChannels(); ++i)
+    {
+        stereoFilter.add (new syfo::Butterworth<double> ());
+    }
 }
 
 void ButterworthAudioProcessor::releaseResources()
@@ -156,6 +98,67 @@ void ButterworthAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBu
 
         // ..do something to the data...
     }
+}
+
+//==============================================================================
+const String ButterworthAudioProcessor::getName() const
+{
+    return JucePlugin_Name;
+}
+
+bool ButterworthAudioProcessor::acceptsMidi() const
+{
+#if JucePlugin_WantsMidiInput
+    return true;
+#else
+    return false;
+#endif
+}
+
+bool ButterworthAudioProcessor::producesMidi() const
+{
+#if JucePlugin_ProducesMidiOutput
+    return true;
+#else
+    return false;
+#endif
+}
+
+bool ButterworthAudioProcessor::isMidiEffect() const
+{
+#if JucePlugin_IsMidiEffect
+    return true;
+#else
+    return false;
+#endif
+}
+
+double ButterworthAudioProcessor::getTailLengthSeconds() const
+{
+    return 0.0;
+}
+
+int ButterworthAudioProcessor::getNumPrograms()
+{
+    return 1;
+}
+
+int ButterworthAudioProcessor::getCurrentProgram()
+{
+    return 0;
+}
+
+void ButterworthAudioProcessor::setCurrentProgram (int index)
+{
+}
+
+const String ButterworthAudioProcessor::getProgramName (int index)
+{
+    return {};
+}
+
+void ButterworthAudioProcessor::changeProgramName (int index, const String& newName)
+{
 }
 
 //==============================================================================

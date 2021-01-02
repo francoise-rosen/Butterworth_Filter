@@ -10,12 +10,19 @@
 
 #pragma once
 #include "Biquad.h"
+#include <vector>
 
 namespace syfo
 {
-    using Math = juce::MathConstants<double>;
-    enum class FilterType {LPF2, HPF2, BPF2, BSF2, LPF3, HPF3, BPF3, BSF3};
     
+    using Math = juce::MathConstants<double>;
+    enum class FilterType {LPF2, HPF2, BPF2, BSF2, LPF3, HPF3, BPF3, BSF3, numTypes};
+    namespace ButterworthID
+    {
+        static const juce::StringArray butterworthFilterAlgorithmIDs {"LPF", "HPF", "BPF", "BPS", "LPF2", "HPF2", "BPF2", "BPS2"};
+        static const juce::StringArray butterworthFilterOrderIDs {"12dB", "18dB", "24dB", "36dB", "48dB", "72dB"};
+    }
+
     //==============================================================================
     template <typename Type>
     struct FilterParameters
@@ -28,21 +35,21 @@ namespace syfo
         inline bool operator!=(const FilterParameters& params);
         
         FilterType algorithm = FilterType::LPF2;
-        Type freq = 100.0;
+        Type frequency = static_cast<Type> (100.0);
     };
     
     template <typename Type>
     FilterParameters<Type>& FilterParameters<Type>::operator=(const FilterParameters& params)
     {
         algorithm = params.algorithm;
-        freq = params.freq;
+        frequency = params.frequency;
         return *this;
     }
     
     template <typename Type>
     inline bool FilterParameters<Type>::operator==(const FilterParameters& params)
     {
-        return ((algorithm == params.algorithm) && (freq == params.freq));
+        return ((algorithm == params.algorithm) && (frequency == params.freq));
     }
     
     template <typename Type>
@@ -57,15 +64,21 @@ namespace syfo
     class Butterworth
     {
     public:
-        Butterworth() {}
+        Butterworth()
+        {
+        }
+        
         Butterworth (FilterParameters<T> parameters, double sampleRate)
         :filterParameters {parameters}, currentSampleRate {sampleRate}
-        {}
+        {
+            
+        }
         ~Butterworth() {}
         T process (const T& sample) noexcept
         {
             
         }
+        
     private:
         FilterParameters<T> filterParameters;
         double currentSampleRate;
@@ -73,3 +86,5 @@ namespace syfo
         JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Butterworth);
     };
 }
+
+

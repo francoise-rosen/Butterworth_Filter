@@ -16,6 +16,13 @@ ButterworthAudioProcessorEditor::ButterworthAudioProcessorEditor (ButterworthAud
     : AudioProcessorEditor (&p), processor (p)
 {
     setSize (400, 300);
+    frequencySlider.setSliderStyle (juce::Slider::SliderStyle::Rotary);
+    addAndMakeVisible (&frequencySlider);
+    amountSlider.setSliderStyle (juce::Slider::SliderStyle::LinearVertical);
+    addAndMakeVisible (&amountSlider);
+    gainSlider.setSliderStyle (juce::Slider::SliderStyle::LinearVertical);
+    addAndMakeVisible (&gainSlider);
+    fillAlgorithmCombo (syfo::ButterworthID::butterworthFilterAlgorithmIDs.size());
 }
 
 ButterworthAudioProcessorEditor::~ButterworthAudioProcessorEditor()
@@ -31,4 +38,9 @@ void ButterworthAudioProcessorEditor::paint (Graphics& g)
 void ButterworthAudioProcessorEditor::resized()
 {
 
+}
+
+void ButterworthAudioProcessorEditor::fillAlgorithmCombo (int numFilters)
+{
+   algorithmCombo.addItemList (syfo::ButterworthID::butterworthFilterAlgorithmIDs, 100);
 }

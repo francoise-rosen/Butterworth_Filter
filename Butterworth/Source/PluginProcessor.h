@@ -58,6 +58,8 @@ public:
     void setStateInformation (const void* data, int sizeInBytes) override;
 
 private:
+    juce::OwnedArray<syfo::Butterworth<double>> stereoFilter;
+    syfo::FilterParameters<double> filterParameters;
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ButterworthAudioProcessor)
 };
