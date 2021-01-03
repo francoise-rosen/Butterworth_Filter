@@ -24,8 +24,7 @@ ButterworthAudioProcessor::ButterworthAudioProcessor()
                        )
 #endif
 {
-    filterParameters.algorithm = syfo::FilterType::LPF2;
-    filterParameters.frequency = 100.0;
+    
 }
 
 ButterworthAudioProcessor::~ButterworthAudioProcessor()
@@ -37,7 +36,7 @@ void ButterworthAudioProcessor::prepareToPlay (double sampleRate, int samplesPer
 {
     for (int i = 0; i < getTotalNumInputChannels(); ++i)
     {
-        stereoFilter.add (new syfo::Butterworth<double> ());
+        stereoFilter.add (new syfo::Cascade<double> ());
     }
 }
 

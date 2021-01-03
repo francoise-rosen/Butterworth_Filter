@@ -81,7 +81,7 @@ namespace syfo
         
     private:
         FilterParameters<T> filterParameters;
-        double currentSampleRate;
+        double currentSampleRate {0};
         Biquad<T> biquad;
         JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Butterworth);
     };
