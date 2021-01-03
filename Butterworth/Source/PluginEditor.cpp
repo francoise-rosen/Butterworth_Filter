@@ -17,12 +17,17 @@ ButterworthAudioProcessorEditor::ButterworthAudioProcessorEditor (ButterworthAud
 {
     setSize (400, 300);
     frequencySlider.setSliderStyle (juce::Slider::SliderStyle::Rotary);
+    frequencySlider.setTextBoxStyle (juce::Slider::TextBoxBelow, false, 60, 25);
     addAndMakeVisible (&frequencySlider);
     amountSlider.setSliderStyle (juce::Slider::SliderStyle::LinearVertical);
+    amountSlider.setTextBoxStyle (juce::Slider::TextBoxBelow, false, 60, 25);
     addAndMakeVisible (&amountSlider);
     gainSlider.setSliderStyle (juce::Slider::SliderStyle::LinearVertical);
+    gainSlider.setTextBoxStyle (juce::Slider::TextBoxBelow, false, 60, 25);
     addAndMakeVisible (&gainSlider);
     fillCombos();
+    addAndMakeVisible (&algorithmCombo);
+    addAndMakeVisible (&orderCombo);
     
     frequencySliderAttachment = std::make_unique<SliderAttachment> (processor.getValueTree(), ParamData::paramArray[ParamData::freq].getID(), frequencySlider);
     amountSliderAttachment = std::make_unique<SliderAttachment> (processor.getValueTree(), ParamData::paramArray[ParamData::amount].getID(), amountSlider);
