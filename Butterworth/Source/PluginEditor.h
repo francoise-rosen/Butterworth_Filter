@@ -35,7 +35,7 @@ private:
     std::unique_ptr<SliderAttachment> frequencySliderAttachment, gainSliderAttachment, amountSliderAttachment;
     std::unique_ptr<ComboBoxAttachment> algorithmComboAttachment, orderComboAttachment;
     
-    void fillAlgorithmCombo (int numFilters);
+    void fillCombos ();
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ButterworthAudioProcessorEditor)
 };

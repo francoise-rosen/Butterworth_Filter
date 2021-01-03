@@ -267,13 +267,6 @@
 			path = "../../JuceLibraryCode/include_juce_audio_plugin_client_VST_utils.mm";
 			sourceTree = "SOURCE_ROOT";
 		};
-		2BA4757318D865AD72CA677E = {
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
-			name = Cascade.h;
-			path = ../../Source/Cascade.h;
-			sourceTree = "SOURCE_ROOT";
-		};
 		2C357F6C1266AF7B54DDC1D9 = {
 			isa = PBXFileReference;
 			lastKnownFileType = file;
@@ -646,7 +639,6 @@
 				EDE894D69A94F312780E62D8,
 				64075BB641E25C755A56A706,
 				5015B584A8E41216070C6E27,
-				2BA4757318D865AD72CA677E,
 				DC22F786AD8527EEABF3862A,
 				1681FF6085CADCEB1934743C,
 			);

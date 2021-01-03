@@ -22,7 +22,13 @@ ButterworthAudioProcessorEditor::ButterworthAudioProcessorEditor (ButterworthAud
     addAndMakeVisible (&amountSlider);
     gainSlider.setSliderStyle (juce::Slider::SliderStyle::LinearVertical);
     addAndMakeVisible (&gainSlider);
-    fillAlgorithmCombo (syfo::ButterworthID::butterworthFilterAlgorithmIDs.size());
+    fillCombos();
+    
+    frequencySliderAttachment = std::make_unique<SliderAttachment> (processor.getValueTree(), ParamData::paramArray[ParamData::freq].getID(), frequencySlider);
+    amountSliderAttachment = std::make_unique<SliderAttachment> (processor.getValueTree(), ParamData::paramArray[ParamData::amount].getID(), amountSlider);
+    gainSliderAttachment = std::make_unique<SliderAttachment> (processor.getValueTree(), ParamData::paramArray[ParamData::gain].getID(), gainSlider);
+    algorithmComboAttachment = std::make_unique<ComboBoxAttachment> (processor.getValueTree(), ParamData::paramArray[ParamData::algo].getID(), algorithmCombo);
+    orderComboAttachment = std::make_unique<ComboBoxAttachment> (processor.getValueTree(), ParamData::paramArray[ParamData::order].getID(), orderCombo);
 }
 
 ButterworthAudioProcessorEditor::~ButterworthAudioProcessorEditor()
@@ -37,10 +43,18 @@ void ButterworthAudioProcessorEditor::paint (Graphics& g)
 
 void ButterworthAudioProcessorEditor::resized()
 {
-
+    auto filterArea = getLocalBounds().reduced (5.0f);
+    auto gainArea = filterArea.removeFromRight (getWidth() * 0.33f);
+    amountSlider.setBounds(gainArea.removeFromLeft (gainArea.getWidth() * 0.5f));
+    gainSlider.setBounds (gainArea);
+    
+    frequencySlider.setBounds (filterArea.removeFromTop (filterArea.getHeight() * 0.5f));
+    algorithmCombo.setBounds (filterArea.removeFromTop (filterArea.getHeight() * 0.5f));
+    orderCombo.setBounds (filterArea);
 }
 
-void ButterworthAudioProcessorEditor::fillAlgorithmCombo (int numFilters)
+void ButterworthAudioProcessorEditor::fillCombos()
 {
    algorithmCombo.addItemList (syfo::ButterworthID::butterworthFilterAlgorithmIDs, 100);
+   orderCombo.addItemList (syfo::ButterworthID::butterworthFilterOrderIDs, 100);
 }
