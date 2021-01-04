@@ -29,25 +29,37 @@ namespace syfo
     struct FilterParameters
     {
         FilterParameters() {}
+        FilterParameters (const Type& f, const int& algo, const int& rf)
+        :frequency {f}, algorithm {static_cast<FilterType> (algo)}, order {static_cast<FilterRollOff> (rf)}
+        {}
         ~FilterParameters() {}
         
-        FilterParameters& operator=(const FilterParameters& params);
+        FilterParameters (const FilterParameters& fp)
+        {
+            if (this == &fp)
+                return;
+            algorithm = fp.algorithm;
+            frequency = fp.frequency;
+            order = fp.order;
+        }
+        
+        FilterParameters<Type>& operator=(const FilterParameters& params)
+        {
+            if (*this == params)
+                return;
+            this->algorithm = params.algorithm;
+            this->frequency = params.frequency;
+            this->order = params.order;
+            return *this;
+        }
+        
         inline bool operator==(const FilterParameters& params);
         inline bool operator!=(const FilterParameters& params);
         
-        FilterType algorithm = FilterType::LPF;
         Type frequency = static_cast<Type> (100.0);
+        FilterType algorithm = FilterType::LPF;
         FilterRollOff order {FilterRollOff::dB12};
     };
-    
-    template <typename Type>
-    FilterParameters<Type>& FilterParameters<Type>::operator=(const FilterParameters& params)
-    {
-        algorithm = params.algorithm;
-        frequency = params.frequency;
-        order = params.order;
-        return *this;
-    }
     
     template <typename Type>
     inline bool FilterParameters<Type>::operator==(const FilterParameters& params)

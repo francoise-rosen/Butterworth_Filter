@@ -24,7 +24,7 @@ ButterworthAudioProcessor::ButterworthAudioProcessor()
                        ),
 #endif
 freqAtom {1000.0}, amountAtom {1.0}, gainAtom {-12.0}, algorithmAtom {0},
-orderAtom {2},
+orderAtom {2}, filterParameters {freqAtom.load(), algorithmAtom.load(), orderAtom.load()},
 parameters {
     *this,
     nullptr,
@@ -32,7 +32,8 @@ parameters {
     createParameterLayout()
 }
 {
-    filterParameters.frequency = 100.0;
+    filterParameters.frequency = freqAtom.load();
+
 }
 
 ButterworthAudioProcessor::~ButterworthAudioProcessor()
