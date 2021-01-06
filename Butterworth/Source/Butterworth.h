@@ -17,7 +17,7 @@ namespace syfo
 
     using Math = juce::MathConstants<double>;
     enum class FilterType {LPF, HPF, BPF, BSF, numTypes};
-    enum class FilterRollOff {dB12 = 2, dB18 = 3, dB24, dB36 = 6, dB48 = 8, dB72 = 12};
+    enum class FilterOrder {dB12 = 2, dB18 = 3, dB24, dB36 = 6, dB48 = 8, dB72 = 12};
     namespace ButterworthID
     {
         static const juce::StringArray butterworthFilterAlgorithmIDs {"LPF", "HPF", "BPF", "BPS"};
@@ -30,7 +30,7 @@ namespace syfo
     {
         FilterParameters() {}
         FilterParameters (const Type& f, const int& algo, const int& rf)
-        :frequency {f}, algorithm {static_cast<FilterType> (algo)}, order {static_cast<FilterRollOff> (rf)}
+        :frequency {f}, algorithm {static_cast<FilterType> (algo)}, order {static_cast<FilterOrder> (rf)}
         {}
         ~FilterParameters() {}
         
@@ -53,12 +53,14 @@ namespace syfo
             return *this;
         }
         
-        inline bool operator==(const FilterParameters& params);
-        inline bool operator!=(const FilterParameters& params);
+        bool operator==(const FilterParameters& params);
+        bool operator!=(const FilterParameters& params);
+        bool isOrderOdd() const {return static_cast<int> (order) % 2; }
+        int getOrderValue() const {return static_cast<int> (order); }
         
         Type frequency = static_cast<Type> (100.0);
         FilterType algorithm = FilterType::LPF;
-        FilterRollOff order {FilterRollOff::dB12};
+        FilterOrder order {FilterOrder::dB12};
     };
     
     template <typename Type>
@@ -81,23 +83,67 @@ namespace syfo
     public:
         Butterworth()
         {
+            cascade.clear();
+            cascade.push_back (std::make_unique<syfo::Biquad<T>> ());
         }
         
         Butterworth (FilterParameters<T> parameters, double sampleRate)
         :filterParameters {parameters}, currentSampleRate {sampleRate}
         {
-            
+            jassert (initialiseCascade() == true);
         }
+        
         ~Butterworth() {}
         T process (const T& sample) noexcept
         {
             
         }
         
+        /** initialise / populate cascade vector. */
+        bool initialiseCascade()
+        {
+            cascade.clear();
+            /** this will do only for LPF and HPF. */
+            if ( (filterParameters.algorithm == FilterType::LPF) || (filterParameters.algorithm == FilterType::HPF))
+            {
+                int numOfBiquads = (filterParameters.isOrderOdd()) ? filterParameters.getOrderValue() / 2 + 1 : filterParameters.getOrderValue;
+                for (int i = 0; i < numOfBiquads; ++i)
+                {
+                    cascade.push_back (std::make_unique<syfo::Biquad<T>> ());
+                }
+            }
+            return (cascade.size() > 0);
+        }
+        
+        /** reset all the biquads in cascade. */
+        void resetAll()
+        {
+            
+        }
+        
+        void setSampleRate (double sampleRate)
+        {
+            if (currentSampleRate == sampleRate)
+                return;
+            currentSampleRate = sampleRate;
+            computeCoefficients();
+        }
+        
     private:
         FilterParameters<T> filterParameters;
         double currentSampleRate {0};
         std::vector<std::unique_ptr<Biquad<T>>> cascade;
+        /** Coeffs for 1 (or 3) order topology. */
+        T coeff1[numCoeffs];
+        /** Coeffs for 2 order topology. */
+        T coeff2[numCoeffs];
+        void computeCoefficients()
+        {
+            
+        }
+        
+        
+        
         JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Butterworth);
     };
 }
