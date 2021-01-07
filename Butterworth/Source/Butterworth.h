@@ -12,6 +12,10 @@
 #include "Biquad.h"
 #include <vector>
 
+/** Make a variadically-templated class that lets you join
+ any number of processor classes into a single processor
+ which will call process() on them all in sequence. */
+
 namespace syfo
 {
 
@@ -96,7 +100,12 @@ namespace syfo
         ~Butterworth() {}
         T process (const T& sample) noexcept
         {
-            
+            T outputSample = sample;
+            for (int i = 0; i < cascade.size(); ++i)
+            {
+                outputSample = cascade[i]->process (outputSample);
+            }
+            return outputSample;
         }
         
         /** initialise / populate cascade vector. */
@@ -127,6 +136,27 @@ namespace syfo
                 return;
             currentSampleRate = sampleRate;
             computeCoefficients();
+        }
+        
+        bool setFilterParameters (const FilterParameters<T>& newParameters)
+        {
+            if (filterParameters.order == newParameters.order)
+            {
+                filterParameters = newParameters;
+            }
+            else if (filterParameters.order < newParameters.order)
+            {
+                /** add biquads. */
+            }
+            
+            else
+            {
+                /** remove biquads. */
+            }
+            // for all biquads!
+            computeCoefficients();
+            return true;
+                
         }
         
     private:
